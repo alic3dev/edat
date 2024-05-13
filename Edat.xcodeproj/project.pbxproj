@@ -15,6 +15,24 @@
 		91233A3F2BE57BB00083E6B2 /* EdatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91233A3E2BE57BB00083E6B2 /* EdatTests.swift */; };
 		91233A492BE57BB00083E6B2 /* EdatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91233A482BE57BB00083E6B2 /* EdatUITests.swift */; };
 		91233A4B2BE57BB00083E6B2 /* EdatUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91233A4A2BE57BB00083E6B2 /* EdatUITestsLaunchTests.swift */; };
+		913F81E02BF1DADC0031D30A /* SynthAmbi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913F81DF2BF1DADC0031D30A /* SynthAmbi.swift */; };
+		916094AD2BF15E100019DFC3 /* SynthBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916094AC2BF15E100019DFC3 /* SynthBasic.swift */; };
+		917295972BF0730A007134C0 /* libzer0-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 917295932BF070B4007134C0 /* libzer0-ios.a */; };
+		91930F692BE7FBC200F1202B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F682BE7FBC200F1202B /* Constants.swift */; };
+		91930F6A2BE7FBC200F1202B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F682BE7FBC200F1202B /* Constants.swift */; };
+		91930F6B2BE7FBC200F1202B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F682BE7FBC200F1202B /* Constants.swift */; };
+		91930F762BE809C900F1202B /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F752BE809C900F1202B /* Data.swift */; };
+		91930F772BE809C900F1202B /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F752BE809C900F1202B /* Data.swift */; };
+		91930F782BE809C900F1202B /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F752BE809C900F1202B /* Data.swift */; };
+		91930F802BE8207E00F1202B /* DataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F7F2BE8207E00F1202B /* DataCollector.swift */; };
+		91930F812BE8207E00F1202B /* DataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F7F2BE8207E00F1202B /* DataCollector.swift */; };
+		91930F822BE8207E00F1202B /* DataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F7F2BE8207E00F1202B /* DataCollector.swift */; };
+		91930F852BE86FD700F1202B /* SpeechNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F842BE86FD700F1202B /* SpeechNode.swift */; };
+		91930F862BE86FD700F1202B /* SpeechNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F842BE86FD700F1202B /* SpeechNode.swift */; };
+		91930F872BE86FD700F1202B /* SpeechNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F842BE86FD700F1202B /* SpeechNode.swift */; };
+		91930F892BE953AF00F1202B /* Speak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F882BE953AF00F1202B /* Speak.swift */; };
+		91930F8A2BE953AF00F1202B /* Speak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F882BE953AF00F1202B /* Speak.swift */; };
+		91930F8B2BE953AF00F1202B /* Speak.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F882BE953AF00F1202B /* Speak.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +50,13 @@
 			remoteGlobalIDString = 91233A272BE57BAB0083E6B2;
 			remoteInfo = Edat;
 		};
+		917295922BF070B4007134C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9172958E2BF070B4007134C0 /* zer0-ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 917295842BF070B4007134C0;
+			remoteInfo = "zer0-ios";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +71,15 @@
 		91233A442BE57BB00083E6B2 /* EdatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EdatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		91233A482BE57BB00083E6B2 /* EdatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdatUITests.swift; sourceTree = "<group>"; };
 		91233A4A2BE57BB00083E6B2 /* EdatUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdatUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		913F81DF2BF1DADC0031D30A /* SynthAmbi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynthAmbi.swift; sourceTree = "<group>"; };
+		916094AC2BF15E100019DFC3 /* SynthBasic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynthBasic.swift; sourceTree = "<group>"; };
+		9172958E2BF070B4007134C0 /* zer0-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "zer0-ios.xcodeproj"; path = "../zer0-ios/zer0-ios.xcodeproj"; sourceTree = "<group>"; };
+		91930F682BE7FBC200F1202B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		91930F752BE809C900F1202B /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		91930F7D2BE8164500F1202B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		91930F7F2BE8207E00F1202B /* DataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollector.swift; sourceTree = "<group>"; };
+		91930F842BE86FD700F1202B /* SpeechNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechNode.swift; sourceTree = "<group>"; };
+		91930F882BE953AF00F1202B /* Speak.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Speak.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				917295972BF0730A007134C0 /* libzer0-ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,10 +111,12 @@
 		91233A1F2BE57BAB0083E6B2 = {
 			isa = PBXGroup;
 			children = (
+				9172958E2BF070B4007134C0 /* zer0-ios.xcodeproj */,
 				91233A2A2BE57BAB0083E6B2 /* Edat */,
 				91233A3D2BE57BB00083E6B2 /* EdatTests */,
 				91233A472BE57BB00083E6B2 /* EdatUITests */,
 				91233A292BE57BAB0083E6B2 /* Products */,
+				917295942BF07126007134C0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,6 +133,12 @@
 		91233A2A2BE57BAB0083E6B2 /* Edat */ = {
 			isa = PBXGroup;
 			children = (
+				91930F832BE86FC100F1202B /* Audio */,
+				91930F7E2BE8207200F1202B /* Data */,
+				91930F7D2BE8164500F1202B /* Info.plist */,
+				91930F742BE809AF00F1202B /* Network */,
+				916094AA2BF15E030019DFC3 /* Synths */,
+				91930F632BE7FABC00F1202B /* Utils */,
 				91233A2B2BE57BAB0083E6B2 /* EdatApp.swift */,
 				91233A2D2BE57BAB0083E6B2 /* ContentView.swift */,
 				91233A2F2BE57BAB0083E6B2 /* Item.swift */,
@@ -128,6 +171,63 @@
 				91233A4A2BE57BB00083E6B2 /* EdatUITestsLaunchTests.swift */,
 			);
 			path = EdatUITests;
+			sourceTree = "<group>";
+		};
+		916094AA2BF15E030019DFC3 /* Synths */ = {
+			isa = PBXGroup;
+			children = (
+				913F81DF2BF1DADC0031D30A /* SynthAmbi.swift */,
+				916094AC2BF15E100019DFC3 /* SynthBasic.swift */,
+			);
+			path = Synths;
+			sourceTree = "<group>";
+		};
+		9172958F2BF070B4007134C0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				917295932BF070B4007134C0 /* libzer0-ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		917295942BF07126007134C0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		91930F632BE7FABC00F1202B /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				91930F682BE7FBC200F1202B /* Constants.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		91930F742BE809AF00F1202B /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				91930F752BE809C900F1202B /* Data.swift */,
+				91930F882BE953AF00F1202B /* Speak.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		91930F7E2BE8207200F1202B /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				91930F7F2BE8207E00F1202B /* DataCollector.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		91930F832BE86FC100F1202B /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				91930F842BE86FD700F1202B /* SpeechNode.swift */,
+			);
+			path = Audio;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,6 +320,12 @@
 			mainGroup = 91233A1F2BE57BAB0083E6B2;
 			productRefGroup = 91233A292BE57BAB0083E6B2 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 9172958F2BF070B4007134C0 /* Products */;
+					ProjectRef = 9172958E2BF070B4007134C0 /* zer0-ios.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				91233A272BE57BAB0083E6B2 /* Edat */,
@@ -228,6 +334,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		917295932BF070B4007134C0 /* libzer0-ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libzer0-ios.a";
+			remoteRef = 917295922BF070B4007134C0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		91233A262BE57BAB0083E6B2 /* Resources */ = {
@@ -260,9 +376,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91930F692BE7FBC200F1202B /* Constants.swift in Sources */,
 				91233A2E2BE57BAB0083E6B2 /* ContentView.swift in Sources */,
+				91930F762BE809C900F1202B /* Data.swift in Sources */,
 				91233A302BE57BAB0083E6B2 /* Item.swift in Sources */,
 				91233A2C2BE57BAB0083E6B2 /* EdatApp.swift in Sources */,
+				916094AD2BF15E100019DFC3 /* SynthBasic.swift in Sources */,
+				91930F802BE8207E00F1202B /* DataCollector.swift in Sources */,
+				91930F892BE953AF00F1202B /* Speak.swift in Sources */,
+				91930F852BE86FD700F1202B /* SpeechNode.swift in Sources */,
+				913F81E02BF1DADC0031D30A /* SynthAmbi.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,7 +393,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91930F862BE86FD700F1202B /* SpeechNode.swift in Sources */,
 				91233A3F2BE57BB00083E6B2 /* EdatTests.swift in Sources */,
+				91930F772BE809C900F1202B /* Data.swift in Sources */,
+				91930F8A2BE953AF00F1202B /* Speak.swift in Sources */,
+				91930F6A2BE7FBC200F1202B /* Constants.swift in Sources */,
+				91930F812BE8207E00F1202B /* DataCollector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,8 +406,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91930F822BE8207E00F1202B /* DataCollector.swift in Sources */,
 				91233A4B2BE57BB00083E6B2 /* EdatUITestsLaunchTests.swift in Sources */,
+				91930F8B2BE953AF00F1202B /* Speak.swift in Sources */,
 				91233A492BE57BB00083E6B2 /* EdatUITests.swift in Sources */,
+				91930F782BE809C900F1202B /* Data.swift in Sources */,
+				91930F6B2BE7FBC200F1202B /* Constants.swift in Sources */,
+				91930F872BE86FD700F1202B /* SpeechNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,11 +562,14 @@
 				DEVELOPMENT_TEAM = UPCM39KX7S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Edat/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Edat;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -458,11 +594,14 @@
 				DEVELOPMENT_TEAM = UPCM39KX7S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Edat/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Edat;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
