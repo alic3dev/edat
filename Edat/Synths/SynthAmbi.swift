@@ -10,41 +10,43 @@ import Foundation
 import AVFAudio
 import zer0_ios
 
-final class SynthAmbi {
+final class SynthAmbi: Synth {
   private let engine: AVAudioEngine
   private let sampleRate: Float
-  private let synth: Synth
-
-  public let delay: AVAudioUnitDelay = .init()
-  public let reverb: AVAudioUnitReverb = .init()
 
   public var yaw: Float = 0.0
 
-  init(engine: AVAudioEngine, sampleRate: Float) {
+  init(engine: AVAudioEngine, sampleRate: Float, volume: Float = 1.0) {
     self.engine = engine
     self.sampleRate = sampleRate
 
-    self.synth = .init(engine: self.engine, sampleRate: self.sampleRate, polyphony: 6)
-    self.synth.attack = 10
-    self.synth.decay = 5
-    self.synth.sustain = 0.5
-    self.synth.sustainDuration = 2.5
-    self.synth.release = 2.5
-//    self.synth.resetVolumeOnNote = false
+    super.init(engine: self.engine, sampleRate: self.sampleRate, volume: volume, polyphony: 6)
 
-    self.delay.delayTime = 1
-    self.delay.feedback = 49
-    self.delay.lowPassCutoff = 1400
-    self.delay.wetDryMix = 50
-    self.engine.attach(self.delay)
+    self.name = "Ambi Synth"
 
-    self.reverb.loadFactoryPreset(.cathedral)
-    self.reverb.wetDryMix = 50
-    self.engine.attach(self.reverb)
+    self.attack = 10
+    self.decay = 5
+    self.sustain = 0.5
+    self.sustainDuration = 2.5
+    self.release = 2.5
+
+    let delay: AVAudioUnitDelay = .init()
+    delay.delayTime = 1
+    delay.feedback = 49
+    delay.lowPassCutoff = 1400
+    delay.wetDryMix = 50
+    self.engine.attach(delay)
+    self.delays.append(delay)
+
+    let reverb: AVAudioUnitReverb = .init()
+    reverb.loadFactoryPreset(.cathedral)
+    reverb.wetDryMix = 50
+    self.engine.attach(reverb)
+    self.reverbs.append(reverb)
   }
 
-  func start(onRender: @escaping onSynthRenderFunc) {
-    self.synth.start(onRender: onRender)
+  override func start(onRender: @escaping onSynthRenderFunc) {
+    super.start(onRender: onRender)
 
     let oscillator: Oscillator = .init(engine: self.engine, sampleRate: self.sampleRate, amplitude: 0.5)
     oscillator.start {
@@ -56,17 +58,13 @@ final class SynthAmbi {
       }
     }
 
-    self.synth.addOscillator(oscillator)
+    self.addOscillator(oscillator)
   }
 
-  func playNote(frequency: Float) {
-    self.synth.playNote(frequency: frequency)
-  }
+  override func connect(to: AVAudioNode, format: AVAudioFormat?) throws {
+    try! super.connect(to: self.reverbs[0], format: format)
 
-  func connct(to: AVAudioNode, format: AVAudioFormat?) throws {
-    try! self.synth.connect(to: self.reverb, format: format)
-
-    self.engine.connect(self.reverb, to: self.delay, format: format)
-    self.engine.connect(self.delay, to: to, format: format)
+    self.engine.connect(self.reverbs[0], to: self.delays[0], format: format)
+    self.engine.connect(self.delays[0], to: to, format: format)
   }
 }

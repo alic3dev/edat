@@ -16,6 +16,16 @@
 		91233A492BE57BB00083E6B2 /* EdatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91233A482BE57BB00083E6B2 /* EdatUITests.swift */; };
 		91233A4B2BE57BB00083E6B2 /* EdatUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91233A4A2BE57BB00083E6B2 /* EdatUITestsLaunchTests.swift */; };
 		913F81E02BF1DADC0031D30A /* SynthAmbi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913F81DF2BF1DADC0031D30A /* SynthAmbi.swift */; };
+		915BD3842BF2FDE2008860C8 /* SynthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BD3832BF2FDE2008860C8 /* SynthView.swift */; };
+		915BD3862BF3119A008860C8 /* getUserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BD3852BF3119A008860C8 /* getUserDefault.swift */; };
+		915BD3882BF3132C008860C8 /* InitialValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BD3872BF3132C008860C8 /* InitialValues.swift */; };
+		915BD38A2BF3156A008860C8 /* SynthSpark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BD3892BF3156A008860C8 /* SynthSpark.swift */; };
+		915BD38D2BF34169008860C8 /* EQBandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BD38C2BF34169008860C8 /* EQBandView.swift */; };
+		915BD38F2BF341A0008860C8 /* EQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BD38E2BF341A0008860C8 /* EQView.swift */; };
+		915BD3912BF3429F008860C8 /* DelayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BD3902BF3429F008860C8 /* DelayView.swift */; };
+		915BD3932BF34317008860C8 /* ReverbView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BD3922BF34317008860C8 /* ReverbView.swift */; };
+		915BD3952BF3435F008860C8 /* DistortionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BD3942BF3435F008860C8 /* DistortionView.swift */; };
+		915BD3982BF356BD008860C8 /* ModifiersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915BD3972BF356BD008860C8 /* ModifiersView.swift */; };
 		916094AD2BF15E100019DFC3 /* SynthBasic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916094AC2BF15E100019DFC3 /* SynthBasic.swift */; };
 		917295972BF0730A007134C0 /* libzer0-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 917295932BF070B4007134C0 /* libzer0-ios.a */; };
 		91930F692BE7FBC200F1202B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91930F682BE7FBC200F1202B /* Constants.swift */; };
@@ -72,6 +82,16 @@
 		91233A482BE57BB00083E6B2 /* EdatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdatUITests.swift; sourceTree = "<group>"; };
 		91233A4A2BE57BB00083E6B2 /* EdatUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdatUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		913F81DF2BF1DADC0031D30A /* SynthAmbi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynthAmbi.swift; sourceTree = "<group>"; };
+		915BD3832BF2FDE2008860C8 /* SynthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynthView.swift; sourceTree = "<group>"; };
+		915BD3852BF3119A008860C8 /* getUserDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getUserDefault.swift; sourceTree = "<group>"; };
+		915BD3872BF3132C008860C8 /* InitialValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialValues.swift; sourceTree = "<group>"; };
+		915BD3892BF3156A008860C8 /* SynthSpark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynthSpark.swift; sourceTree = "<group>"; };
+		915BD38C2BF34169008860C8 /* EQBandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EQBandView.swift; sourceTree = "<group>"; };
+		915BD38E2BF341A0008860C8 /* EQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EQView.swift; sourceTree = "<group>"; };
+		915BD3902BF3429F008860C8 /* DelayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayView.swift; sourceTree = "<group>"; };
+		915BD3922BF34317008860C8 /* ReverbView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverbView.swift; sourceTree = "<group>"; };
+		915BD3942BF3435F008860C8 /* DistortionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistortionView.swift; sourceTree = "<group>"; };
+		915BD3972BF356BD008860C8 /* ModifiersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifiersView.swift; sourceTree = "<group>"; };
 		916094AC2BF15E100019DFC3 /* SynthBasic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynthBasic.swift; sourceTree = "<group>"; };
 		9172958E2BF070B4007134C0 /* zer0-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "zer0-ios.xcodeproj"; path = "../zer0-ios/zer0-ios.xcodeproj"; sourceTree = "<group>"; };
 		91930F682BE7FBC200F1202B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -139,6 +159,7 @@
 				91930F742BE809AF00F1202B /* Network */,
 				916094AA2BF15E030019DFC3 /* Synths */,
 				91930F632BE7FABC00F1202B /* Utils */,
+				915BD38B2BF34139008860C8 /* Views */,
 				91233A2B2BE57BAB0083E6B2 /* EdatApp.swift */,
 				91233A2D2BE57BAB0083E6B2 /* ContentView.swift */,
 				91233A2F2BE57BAB0083E6B2 /* Item.swift */,
@@ -173,11 +194,34 @@
 			path = EdatUITests;
 			sourceTree = "<group>";
 		};
+		915BD38B2BF34139008860C8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				915BD3962BF3443B008860C8 /* SynthSubviews */,
+				915BD3832BF2FDE2008860C8 /* SynthView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		915BD3962BF3443B008860C8 /* SynthSubviews */ = {
+			isa = PBXGroup;
+			children = (
+				915BD38C2BF34169008860C8 /* EQBandView.swift */,
+				915BD38E2BF341A0008860C8 /* EQView.swift */,
+				915BD3902BF3429F008860C8 /* DelayView.swift */,
+				915BD3922BF34317008860C8 /* ReverbView.swift */,
+				915BD3942BF3435F008860C8 /* DistortionView.swift */,
+				915BD3972BF356BD008860C8 /* ModifiersView.swift */,
+			);
+			path = SynthSubviews;
+			sourceTree = "<group>";
+		};
 		916094AA2BF15E030019DFC3 /* Synths */ = {
 			isa = PBXGroup;
 			children = (
 				913F81DF2BF1DADC0031D30A /* SynthAmbi.swift */,
 				916094AC2BF15E100019DFC3 /* SynthBasic.swift */,
+				915BD3892BF3156A008860C8 /* SynthSpark.swift */,
 			);
 			path = Synths;
 			sourceTree = "<group>";
@@ -201,6 +245,8 @@
 			isa = PBXGroup;
 			children = (
 				91930F682BE7FBC200F1202B /* Constants.swift */,
+				915BD3852BF3119A008860C8 /* getUserDefault.swift */,
+				915BD3872BF3132C008860C8 /* InitialValues.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -376,16 +422,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				915BD3912BF3429F008860C8 /* DelayView.swift in Sources */,
+				915BD38F2BF341A0008860C8 /* EQView.swift in Sources */,
 				91930F692BE7FBC200F1202B /* Constants.swift in Sources */,
+				915BD38D2BF34169008860C8 /* EQBandView.swift in Sources */,
 				91233A2E2BE57BAB0083E6B2 /* ContentView.swift in Sources */,
+				915BD38A2BF3156A008860C8 /* SynthSpark.swift in Sources */,
+				915BD3982BF356BD008860C8 /* ModifiersView.swift in Sources */,
+				915BD3882BF3132C008860C8 /* InitialValues.swift in Sources */,
 				91930F762BE809C900F1202B /* Data.swift in Sources */,
 				91233A302BE57BAB0083E6B2 /* Item.swift in Sources */,
+				915BD3932BF34317008860C8 /* ReverbView.swift in Sources */,
 				91233A2C2BE57BAB0083E6B2 /* EdatApp.swift in Sources */,
 				916094AD2BF15E100019DFC3 /* SynthBasic.swift in Sources */,
 				91930F802BE8207E00F1202B /* DataCollector.swift in Sources */,
+				915BD3842BF2FDE2008860C8 /* SynthView.swift in Sources */,
 				91930F892BE953AF00F1202B /* Speak.swift in Sources */,
 				91930F852BE86FD700F1202B /* SpeechNode.swift in Sources */,
+				915BD3952BF3435F008860C8 /* DistortionView.swift in Sources */,
 				913F81E02BF1DADC0031D30A /* SynthAmbi.swift in Sources */,
+				915BD3862BF3119A008860C8 /* getUserDefault.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
