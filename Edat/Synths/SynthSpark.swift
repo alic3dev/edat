@@ -1,8 +1,8 @@
 //
-//  Basic.swift
+//  SynthSpark.swift
 //  Edat
 //
-//  Created by Alice Grace on 5/12/24.
+//  Created by Alice Grace on 5/13/24.
 //
 
 import Foundation
@@ -10,11 +10,9 @@ import Foundation
 import AVFAudio
 import zer0_ios
 
-final class SynthBasic: Synth {
+final class SynthSpark: Synth {
   private let engine: AVAudioEngine
   private let sampleRate: Float
-
-  public var yaw: Float = 0.0
 
   init(engine: AVAudioEngine, sampleRate: Float, volume: Float = 1.0) {
     self.engine = engine
@@ -22,7 +20,23 @@ final class SynthBasic: Synth {
 
     super.init(engine: self.engine, sampleRate: self.sampleRate, volume: volume, polyphony: 6)
 
-    self.name = "Basic Synth"
+    self.name = "Spark Synth"
+
+    self.attack = 0.15
+    self.decay = 0.05
+    self.sustain = 0.75
+    self.sustainDuration = 0.025
+    self.release = 0.025
+
+    let filter: AVAudioUnitEQ = .init(numberOfBands: 1)
+    filter.bands[0].filterType = .lowPass
+    filter.bands[0].frequency = 400
+    filter.bands[0].bypass = false
+    filter.bands[0].gain = 0
+    filter.bands[0].bandwidth = 1
+
+    self.engine.attach(filter)
+    self.eqs.append(filter)
 
     let delay: AVAudioUnitDelay = .init()
     delay.delayTime = 1
@@ -33,8 +47,8 @@ final class SynthBasic: Synth {
     self.delays.append(delay)
 
     let reverb: AVAudioUnitReverb = .init()
-    reverb.loadFactoryPreset(.mediumRoom)
-    reverb.wetDryMix = 10
+    reverb.loadFactoryPreset(.smallRoom)
+    reverb.wetDryMix = 20
     self.engine.attach(reverb)
     self.reverbs.append(reverb)
   }
@@ -42,29 +56,16 @@ final class SynthBasic: Synth {
   override func start(onRender: @escaping onSynthRenderFunc) {
     super.start(onRender: onRender)
 
-    let oscillator: Oscillator = .init(engine: self.engine, sampleRate: self.sampleRate, amplitude: 0.6)
-    oscillator.start {
-      { phaseValue in
-        let sine = SignalSine.generate(phaseValue) * 1.0 - self.yaw
-        let triangle = SignalTriangle.generate(phaseValue) * self.yaw
+    let oscillator: Oscillator = .init(engine: self.engine, sampleRate: self.sampleRate, type: .sine, amplitude: 0.6)
+    oscillator.start()
 
-        return sine + triangle
-      }
-    }
-
-    let oscillatorTwo: Oscillator = .init(engine: self.engine, sampleRate: self.sampleRate, amplitude: 0.15)
-    oscillatorTwo.start {
-      { phaseValue in
-        SignalSawtoothUp.generate(phaseValue) * min(self.yaw, 0.25)
-      }
-    }
-
-    super.addOscillator([oscillator, oscillatorTwo])
+    super.addOscillator(oscillator)
   }
 
   override func connect(to: AVAudioNode, format: AVAudioFormat?) throws {
-    try! super.connect(to: self.delays[0], format: format)
+    try! super.connect(to: self.eqs[0], format: format)
 
+    self.engine.connect(self.eqs[0], to: self.delays[0], format: format)
     self.engine.connect(self.delays[0], to: self.reverbs[0], format: format)
     self.engine.connect(self.reverbs[0], to: to, format: format)
   }
