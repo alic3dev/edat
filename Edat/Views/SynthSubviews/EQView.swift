@@ -16,7 +16,7 @@ struct EQView: View {
 
   var body: some View {
     Section("EQ \(index + 1) \(eq.name)") {
-      Slider(value: Binding(
+      Slider(value: Binding<Float>(
         get: {
           eq.globalGain
         },
@@ -32,7 +32,12 @@ struct EQView: View {
       }
 
       ForEach(Array(eq.bands.enumerated()), id: \.offset) { index, band in
-        EQBandView(filterType: band.filterType, index: index, band: band)
+        EQBandView(
+          filterType: band.filterType,
+          bypass: band.bypass,
+          index: index,
+          band: band
+        )
       }
     }
   }

@@ -7,15 +7,6 @@
 
 import Foundation
 
-//
-//  File.swift
-//  Edat
-//
-//  Created by Alice Grace on 5/5/24.
-//
-
-import Foundation
-
 func postSpeak(
   callback: @escaping (String?) -> Void
 ) {
