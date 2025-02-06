@@ -9,6 +9,17 @@ import Foundation
 
 import zer0_ios
 
+var _initialBPM: Float?
+func getInitialBPM() -> Float {
+  if _initialBPM != nil {
+    return _initialBPM!
+  }
+
+  _initialBPM = getUserDefault(key: "BPM", defaultValue: 90.0)
+
+  return _initialBPM!
+}
+
 var _initialSelectedScaleKey: Note?
 func getInitialSelectedScaleKey() -> Note {
   if _initialSelectedScaleKey != nil {

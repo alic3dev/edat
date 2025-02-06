@@ -22,11 +22,11 @@ final class SynthSpark: Synth {
 
     self.name = "Spark Synth"
 
-    self.attack = 0.15
-    self.decay = 0.05
-    self.sustain = 0.75
-    self.sustainDuration = 0.025
-    self.release = 0.025
+    self.attack = 0.1 * 60
+    self.decay = 0.03333333333 * 60
+    self.sustain = 0.5
+    self.sustainDuration = 0.01666666667 * 60
+    self.release = 0.01666666667 * 60
 
     let filter: AVAudioUnitEQ = .init(numberOfBands: 1)
     filter.bands[0].filterType = .lowPass
@@ -34,23 +34,19 @@ final class SynthSpark: Synth {
     filter.bands[0].bypass = false
     filter.bands[0].gain = 0
     filter.bands[0].bandwidth = 1
-
-    self.engine.attach(filter)
-    self.eqs.append(filter)
+    self.addEffect(effect: filter)
 
     let delay: AVAudioUnitDelay = .init()
     delay.delayTime = 1
     delay.feedback = 30
     delay.lowPassCutoff = 1400
     delay.wetDryMix = 25
-    self.engine.attach(delay)
-    self.delays.append(delay)
+    self.addEffect(effect: delay)
 
     let reverb: AVAudioUnitReverb = .init()
     reverb.loadFactoryPreset(.smallRoom)
     reverb.wetDryMix = 20
-    self.engine.attach(reverb)
-    self.reverbs.append(reverb)
+    self.addEffect(effect: reverb)
   }
 
   override func start(onRender: @escaping onSynthRenderFunc) {
@@ -60,13 +56,5 @@ final class SynthSpark: Synth {
     oscillator.start()
 
     super.addOscillator(oscillator)
-  }
-
-  override func connect(to: AVAudioNode, format: AVAudioFormat?) throws {
-    try! super.connect(to: self.eqs[0], format: format)
-
-    self.engine.connect(self.eqs[0], to: self.delays[0], format: format)
-    self.engine.connect(self.delays[0], to: self.reverbs[0], format: format)
-    self.engine.connect(self.reverbs[0], to: to, format: format)
   }
 }

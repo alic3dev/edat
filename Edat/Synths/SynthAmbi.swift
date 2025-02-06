@@ -24,25 +24,25 @@ final class SynthAmbi: Synth {
 
     self.name = "Ambi Synth"
 
-    self.attack = 10
-    self.decay = 5
+    self.attack = 6.6666666667 * 2
+    self.decay = 3.3333333333 * 8
     self.sustain = 0.5
-    self.sustainDuration = 2.5
-    self.release = 2.5
+    self.sustainDuration = 1.6666666667 * 5
+    self.release = 1.6666666667 * 5
+
+    let reverb: AVAudioUnitReverb = .init()
+    self.engine.attach(reverb)
+    reverb.loadFactoryPreset(.cathedral)
+    reverb.wetDryMix = 50
+    self.addEffect(effect: reverb)
 
     let delay: AVAudioUnitDelay = .init()
+    self.engine.attach(delay)
     delay.delayTime = 1
     delay.feedback = 49
     delay.lowPassCutoff = 1400
     delay.wetDryMix = 50
-    self.engine.attach(delay)
-    self.delays.append(delay)
-
-    let reverb: AVAudioUnitReverb = .init()
-    reverb.loadFactoryPreset(.cathedral)
-    reverb.wetDryMix = 50
-    self.engine.attach(reverb)
-    self.reverbs.append(reverb)
+    self.addEffect(effect: delay)
   }
 
   override func start(onRender: @escaping onSynthRenderFunc) {
@@ -52,19 +52,12 @@ final class SynthAmbi: Synth {
     oscillator.start {
       { phaseValue in
         let sine = SignalSine.generate(phaseValue) * self.yaw
-        let triangle = SignalTriangle.generate(phaseValue) * 1.0 - self.yaw
+        let triangle = SignalTriangle.generate(phaseValue) * (1.0 - self.yaw)
 
-        return sine + triangle
+        return min(max(sine + triangle, -1), 1)
       }
     }
 
-    self.addOscillator(oscillator)
-  }
-
-  override func connect(to: AVAudioNode, format: AVAudioFormat?) throws {
-    try! super.connect(to: self.reverbs[0], format: format)
-
-    self.engine.connect(self.reverbs[0], to: self.delays[0], format: format)
-    self.engine.connect(self.delays[0], to: to, format: format)
+    super.addOscillator(oscillator)
   }
 }

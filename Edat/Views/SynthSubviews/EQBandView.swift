@@ -30,6 +30,7 @@ let bandwidthEnabledEqFilterTypes: [AVAudioUnitEQFilterType] = [
 
 struct EQBandView: View {
   @State var filterType: AVAudioUnitEQFilterType
+  @State var bypass: Bool
 
   var index: Int
   var band: AVAudioUnitEQFilterParameters
@@ -37,17 +38,10 @@ struct EQBandView: View {
   var body: some View {
     Text("Band \(index)").font(.title3)
 
-    Toggle(isOn: Binding<Bool>(
-      get: {
-        band.bypass
-      },
-      set: { value in
-        band.bypass = value
-
-        print(band.filterType.rawValue)
-      }
-    )) {
+    Toggle(isOn: $bypass) {
       Text("Bypass")
+    }.onChange(of: bypass) {
+      band.bypass = self.bypass
     }
 
     Picker("Filter Type", selection: $filterType) {
@@ -66,7 +60,7 @@ struct EQBandView: View {
       band.filterType = self.filterType
     }
 
-    Slider(value: Binding(
+    Slider(value: Binding<Float>(
       get: {
         band.frequency
       },

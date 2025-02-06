@@ -13,14 +13,25 @@ import Foundation
 import zer0_ios
 
 struct SynthView: View {
+  @State var reloadView: Bool = false
+  @State private var id: String = UUID().uuidString
+  @State var playMode: PlayMode = .device
+  
   var synth: Synth
 
   var body: some View {
     List {
       Section("Settings") {
-        Text(synth.name)
+        TextField("Name", text: Binding<String>(
+          get: {
+            synth.name
+          },
+          set: { value in
+            synth.name = value
+          }
+        ))
 
-        Toggle(isOn: Binding(
+        Toggle(isOn: Binding<Bool>(
           get: {
             synth.enabled
           },
@@ -29,6 +40,32 @@ struct SynthView: View {
           }
         )) {
           Text("Enable")
+        }
+        
+        Picker("Playmode", selection: self.$playMode, content: {
+          Text("Device").tag(PlayMode.device)
+          Text("Sequencer").tag(PlayMode.sequencer)
+        }).onChange(of: self.playMode, {
+          self.synth.playMode = self.playMode;
+        })
+
+        Slider(
+          value: Binding<Float>(
+            get: {
+              synth.mixer.outputVolume
+            },
+            set: { value in
+              synth.mixer.outputVolume = value
+            }
+          ),
+          in: 0 ... 1,
+          step: 0.01
+        ) {
+          Text("Volume")
+        } minimumValueLabel: {
+          Text("\(Image(systemName: "speaker"))")
+        } maximumValueLabel: {
+          Text("\(Image(systemName: "speaker.wave.3"))")
         }
       }
 
@@ -108,6 +145,8 @@ struct SynthView: View {
           Text("\(Image(systemName: "cloud.rain"))")
         }
       }
+      
+      ForEach(Array(synth.))
 
       if synth.modifiers.count > 0 {
         Section("Modifiers") {
@@ -117,21 +156,48 @@ struct SynthView: View {
         }
       }
 
-      ForEach(Array(synth.eqs.enumerated()), id: \.offset) { index, eq in
-        EQView(index: index, eq: eq)
-      }
+      ForEach(Array(synth.effectChain.enumerated()), id: \.offset) { index, effect in
+        if effect is AVAudioUnitEQ {
+          EQView(index: index, eq: effect as! AVAudioUnitEQ)
+        } else if effect is AVAudioUnitDelay {
+          DelayView(index: index, delay: effect as! AVAudioUnitDelay)
+        } else if effect is AVAudioUnitReverb {
+          ReverbView(index: index, reverb: effect as! AVAudioUnitReverb)
+        } else if effect is AVAudioUnitDistortion {
+          DistortionView(index: index, distortion: effect as! AVAudioUnitDistortion)
+        }
+      }.id(self.id)
 
-      ForEach(Array(synth.delays.enumerated()), id: \.offset) { index, delay in
-        DelayView(index: index, delay: delay)
-      }
+      Button("Add EQ", action: {
+        let filter: AVAudioUnitEQ = .init(numberOfBands: 1)
 
-      ForEach(Array(synth.reverbs.enumerated()), id: \.offset) { index, reverb in
-        ReverbView(index: index, reverb: reverb)
-      }
+        synth.addEffect(effect: filter)
 
-      ForEach(Array(synth.distortions.enumerated()), id: \.offset) { index, distortion in
-        DistortionView(index: index, distortion: distortion)
-      }
-    }
+        self.id = UUID().uuidString
+      })
+      Button("Add Delay", action: {
+        let delay: AVAudioUnitDelay = .init()
+
+        synth.addEffect(effect: delay)
+
+        self.id = UUID().uuidString
+      })
+      Button("Add Reverb", action: {
+        let reverb: AVAudioUnitReverb = .init()
+
+        synth.addEffect(effect: reverb)
+
+        self.id = UUID().uuidString
+      })
+      Button("Add Distortion", action: {
+        let distortion: AVAudioUnitDistortion = .init()
+
+        synth.addEffect(effect: distortion)
+
+        self.id = UUID().uuidString
+      })
+    }.onAppear(perform: {
+      self.playMode = self.synth.playMode;
+    })
   }
 }

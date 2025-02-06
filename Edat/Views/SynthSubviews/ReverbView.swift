@@ -11,21 +11,36 @@ import AVFAudio
 import Foundation
 
 struct ReverbView: View {
+  @State var mockPreset: Int = -1
+
   var index: Int
   var reverb: AVAudioUnitReverb
 
   var body: some View {
     Section("Reverb \(index + 1) \(reverb.name)") {
-//          Picker("Preset", selection: reverb.) {
-//            ForEach(Notes, id: \.self.hashValue) { note in
-//              Text(getNoteLabel(note: note)).tag(note)
-//            }
-//          }.onChange(of: self.selectedScaleKey) {
-//            UserDefaults.standard.setValue(self.selectedScaleKey.rawValue, forKey: "ScaleKey")
-//            self.selectedScaleInKey = getScaleInKey(scale: self.selectedScale, key: self.selectedScaleKey)
-//          }
+      Picker("Load Factory Preset", selection: self.$mockPreset) {
+        Text("").tag(-1)
+        Text("Cathedral").tag(AVAudioUnitReverbPreset.cathedral.rawValue)
+        Text("Large Chamber").tag(AVAudioUnitReverbPreset.largeChamber.rawValue)
+        Text("Large Hall").tag(AVAudioUnitReverbPreset.largeHall.rawValue)
+        Text("Large Hall 2").tag(AVAudioUnitReverbPreset.largeHall2.rawValue)
+        Text("Large Room").tag(AVAudioUnitReverbPreset.largeRoom.rawValue)
+        Text("Large Room 2").tag(AVAudioUnitReverbPreset.largeRoom2.rawValue)
+        Text("Medium Chamber").tag(AVAudioUnitReverbPreset.mediumChamber.rawValue)
+        Text("Medium Hall").tag(AVAudioUnitReverbPreset.mediumHall.rawValue)
+        Text("Medium Hall 2").tag(AVAudioUnitReverbPreset.mediumHall2.rawValue)
+        Text("Medium Hall 3").tag(AVAudioUnitReverbPreset.mediumHall3.rawValue)
+        Text("Medium Room").tag(AVAudioUnitReverbPreset.mediumRoom.rawValue)
+        Text("Plate").tag(AVAudioUnitReverbPreset.plate.rawValue)
+        Text("Small Room").tag(AVAudioUnitReverbPreset.smallRoom.rawValue)
+      }.onChange(of: self.mockPreset) {
+        if self.mockPreset != -1 {
+          self.reverb.loadFactoryPreset(AVAudioUnitReverbPreset(rawValue: self.mockPreset)!)
+          self.mockPreset = -1
+        }
+      }
 
-      Slider(value: Binding(
+      Slider(value: Binding<Float>(
         get: {
           reverb.wetDryMix
         },

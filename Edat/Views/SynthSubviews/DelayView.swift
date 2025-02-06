@@ -16,7 +16,7 @@ struct DelayView: View {
 
   var body: some View {
     Section("Delay \(index + 1) \(delay.name)") {
-      Slider(value: Binding(
+      Slider(value: Binding<Double>(
         get: {
           delay.delayTime
         },
@@ -31,7 +31,7 @@ struct DelayView: View {
         Text("\(Image(systemName: "hourglass.tophalf.filled"))")
       }
 
-      Slider(value: Binding(
+      Slider(value: Binding<Float>(
         get: {
           delay.lowPassCutoff
         },
@@ -46,7 +46,7 @@ struct DelayView: View {
         Text("\(Image(systemName: "dial.low.fill"))")
       }
 
-      Slider(value: Binding(
+      Slider(value: Binding<Float>(
         get: {
           delay.feedback
         },
@@ -61,7 +61,7 @@ struct DelayView: View {
         Text("\(Image(systemName: "point.forward.to.point.capsulepath.fill"))")
       }
 
-      Slider(value: Binding(
+      Slider(value: Binding<Float>(
         get: {
           delay.wetDryMix
         },

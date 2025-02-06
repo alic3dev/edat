@@ -5,27 +5,36 @@
 //  Created by Alice Grace on 5/3/24.
 //
 
-import SwiftData
 import SwiftUI
 
 import AVFoundation
-import CoreMotion
 
+import DaCo
 import zer0_ios
+
+private let defaultServer: Server = .init(
+  protocolType: EDAT_SERVER_PROTOCOL,
+  host: EDAT_SERVER_HOST,
+  port: EDAT_SERVER_PORT,
+  endPoint: EDAT_SERVER_ENDPOINT_DATA,
+  headers: [.init(value: EDAT_API_SECRET, field: EDAT_API_SECRET_FIELD)]
+)
 
 private var engine: AVAudioEngine?
 private var inputFormat: AVAudioFormat?
-private var dataCollector: DataCollector?
+private var daco: DaCo?
 private var noteTable: [[Float]] = createNoteTable(frequencyRoot: .magic)
+private var noteTableSize: Int = noteTable.reduce(noteTable.count) { prev, next in prev + next.count }
 
 struct ContentView: View {
-  @Environment(\.modelContext) private var modelContext
-
   @State private var enableNetworking: Bool = getUserDefault(key: "EnableNetworking", defaultValue: true)
 
   @State private var volume: Float = getUserDefault(key: "Volume", defaultValue: 100.0)
+
   @State private var bpm: Float = getUserDefault(key: "BPM", defaultValue: 90.0)
   @State private var bpmSync: Bool = getUserDefault(key: "BPMSync", defaultValue: true)
+  @State private var beatSignal: Bool = false
+
   @State private var frequencyHistory: [Float] = [0.0]
 
   @State private var selectedScaleKey: Note = getInitialSelectedScaleKey()
@@ -33,10 +42,13 @@ struct ContentView: View {
   @State private var selectedScaleInKey: Scale = getScaleInKey(scale: getInitialSelectedScale(), key: getInitialSelectedScaleKey())
 
   @State private var synths: [Synth] = []
+  @State private var synthPlayModes: [UUID: PlayMode] = [:]
 
   @State private var playStarting: Bool = false
   @State private var playing: Bool = false
   @State private var fullyStopped: Bool = true
+
+  @State private var sequences: [UUID: Sequence] = [:]
 
   var body: some View {
     NavigationStack {
@@ -112,12 +124,33 @@ struct ContentView: View {
           }
         }
 
+        Section("Notes") {
+          NavigationLink {
+            NotesView(synths: self.synths, noteTable: noteTable, scale: self.selectedScaleInKey)
+          } label: {
+            Text("Play")
+          }.disabled(synths.count == 0)
+        }
+
+        Section("Sequencer") {
+          NavigationLink {
+            SequencerView(synths: self.synths,
+                          sequences: self.sequences,
+                          noteTable: noteTable,
+                          noteTableSize: noteTableSize,
+                          scale: self.selectedScaleInKey,
+                          beatSignal: self.beatSignal)
+          } label: {
+            Text("Edit")
+          }.disabled(synths.count == 0) // || synths.first { synth in synth.playMode == .sequencer } == nil)
+        }
+
         Section("Settings") {
           Toggle(isOn: self.$enableNetworking) {
             Text("Networking")
           }.onChange(of: self.enableNetworking) { _, newValue in
             UserDefaults.standard.setValue(newValue, forKey: "EnableNetworking")
-            dataCollector?.shouldPostData = newValue
+            daco?.shouldPostData = newValue
           }
         }
       }.toolbar {
@@ -137,18 +170,36 @@ struct ContentView: View {
           }.disabled(self.playStarting || self.playing)
         }
       }
-    }
+    }.onAppear(perform: {
+      self.initEngine()
+    })
   }
 
   private func addSynth() {
-    let synth: Synth = .init(engine: engine!, sampleRate: Float(inputFormat!.sampleRate))
-    synth.start {}
+    DispatchQueue.main.async {
+      let synth: Synth = .init(engine: engine!, sampleRate: Float(inputFormat!.sampleRate), volume: 0.4, polyphony: 6)
+      synth.start {}
 
-    synths.append(synth)
+      let oscillator: Oscillator = .init(engine: engine!, sampleRate: Float(inputFormat!.sampleRate), type: .sine, amplitude: 0.6)
+      oscillator.start()
+
+      let oscillatorTwo: Oscillator = .init(engine: engine!, sampleRate: Float(inputFormat!.sampleRate), type: .triangle, amplitude: 0.3)
+      oscillatorTwo.start()
+
+      synth.addOscillator([oscillator, oscillatorTwo])
+
+      addSynth(synth: synth)
+    }
   }
 
   private func addSynth(synth: Synth) {
     synths.append(synth)
+
+    try! synth.connect(to: engine!.mainMixerNode, format: inputFormat)
+    synth.bpm = bpm
+
+    synthPlayModes[synth.id] = .device
+    sequences[synth.id] = .init()
   }
 
   private func start() {
@@ -164,16 +215,15 @@ struct ContentView: View {
     playStarting = true
 
     DispatchQueue.main.async {
-      if dataCollector == nil {
-        dataCollector = .init()
+      if daco == nil {
+        daco = try! .init(server: defaultServer, dataToCollect: nil, shouldPostData: self.enableNetworking)
       }
-
-      dataCollector?.shouldPostData = self.enableNetworking
 
       do {
         try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
         try AVAudioSession.sharedInstance().setActive(true)
-      } catch {}
+      } catch {
+      }
 
       self.initEngine()
 
@@ -208,76 +258,29 @@ struct ContentView: View {
 
     var yaw: Float = 0.0
 
-    let basicSynth: SynthBasic = .init(engine: engine!, sampleRate: sampleRate, volume: 0.5)
+    let basicSynth: SynthBasic = .init(engine: engine!, sampleRate: sampleRate, volume: 0.4)
     basicSynth.start {
       // roll/yaw (-180 : 180)
       // pitch (-90 : 90)
 
-      yaw = Float(abs(max(min(180 * (dataCollector?.motion.deviceMotion?.attitude.yaw ?? 0) / Double.pi, 180), -180)) / 180)
-
+      yaw = Float(abs(max(min(180 * (daco?.motion.deviceMotion?.attitude.yaw ?? 0) / Double.pi, 180), -180)) / 180)
       basicSynth.yaw = yaw
-
-      let newFrequency: Float = noteTable[
-        (abs(Int((dataCollector?.motion.deviceMotion?.attitude.pitch ?? 0) * 10)) % 3) + 2
-      ][
-        self.selectedScaleInKey.notes[abs(Int((dataCollector?.motion.deviceMotion?.attitude.roll ?? 0) * 10)) % self.selectedScaleInKey.notes.count]
-      ]
-
-      if self.frequencyHistory[self.frequencyHistory.count - 1] != newFrequency {
-        self.frequencyHistory.append(newFrequency)
-        basicSynth.playNote(frequency: newFrequency)
-
-        if self.frequencyHistory.count > 10 {
-          self.frequencyHistory.removeSubrange(0 ... (self.frequencyHistory.count - 11))
-        }
-      }
     }
     addSynth(synth: basicSynth)
 
-    var lastSparkUpdate = Date.now.timeIntervalSince1970
     let sparkSynth: SynthSpark = .init(engine: engine!, sampleRate: sampleRate, volume: 0.5)
-    sparkSynth.start {
-      if Date.now.timeIntervalSince1970 - lastSparkUpdate > 1 {
-        sparkSynth.playNote(frequency: noteTable[Int.random(in: 3 ... 5)][self.selectedScaleInKey.notes.randomElement()!])
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-          sparkSynth.playNote(frequency: noteTable[Int.random(in: 3 ... 5)][self.selectedScaleInKey.notes.randomElement()!])
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-          sparkSynth.playNote(frequency: noteTable[Int.random(in: 3 ... 5)][self.selectedScaleInKey.notes.randomElement()!])
-        }
-
-        lastSparkUpdate = Date.now.timeIntervalSince1970
-      }
-    }
+    sparkSynth.start()
     addSynth(synth: sparkSynth)
 
-    var lastAmbiUpdate = Date.now.timeIntervalSince1970
-    let ambiSynth: SynthAmbi = .init(engine: engine!, sampleRate: sampleRate, volume: 0.5)
+    let ambiSynth: SynthAmbi = .init(engine: engine!, sampleRate: sampleRate, volume: 0.4)
     ambiSynth.start {
       ambiSynth.yaw = yaw
-
-      if Date.now.timeIntervalSince1970 - lastAmbiUpdate > 15 {
-        let rootNote = selectedScaleInKey.notes.randomElement()!
-
-        ambiSynth.playNote(frequency: noteTable[3][rootNote])
-        ambiSynth.playNote(frequency: noteTable[2][self.selectedScaleInKey.notes.randomElement()!])
-        ambiSynth.playNote(frequency: noteTable[1][rootNote])
-
-        lastAmbiUpdate = Date.now.timeIntervalSince1970
-      }
     }
     addSynth(synth: ambiSynth)
 
-    for synth in synths {
-      try! synth.connect(to: mainMixer, format: inputFormat)
-    }
-
-    let rootNote = selectedScaleInKey.notes.randomElement()!
-    ambiSynth.playNote(frequency: noteTable[3][rootNote])
-    ambiSynth.playNote(frequency: noteTable[2][selectedScaleInKey.notes.randomElement()!])
-    ambiSynth.playNote(frequency: noteTable[1][rootNote])
+    let dustSynth: SynthDust = .init(engine: engine!, sampleRate: sampleRate, volume: 0.25)
+    dustSynth.start()
+    addSynth(synth: dustSynth)
 
     let speechNode: SpeechNode = .init(format: AVAudioFormat(
       commonFormat: inputFormat!.commonFormat,
@@ -291,6 +294,104 @@ struct ContentView: View {
 
     engine!.connect(mainMixer, to: output, format: outputFormat)
     mainMixer.outputVolume = volume / 100
+
+    var bar = 0
+    var beat: UInt8 = 0
+    var beatStep: UInt8 = 0
+    let beatTotalSteps: UInt8 = 64
+    func startBPMTimer() {
+      Timer.scheduledTimer(withTimeInterval: Double(bpm) / 60.0 / Double(beatTotalSteps), repeats: true) { timer in
+        if !self.playing {
+          return
+        }
+
+//        if beatStep % 64 == 0 {
+//          print("Whole")
+//        } else if beatStep % 32 == 0 {
+//          print("1/2th")
+//        } else if beatStep % 16 == 0 {
+//          print("1/4th")
+//        } else if beatStep % 8 == 0 {
+//          print("1/8th")
+//        } else if beatStep % 4 == 0 {
+//          print("1/16th")
+//        } else if beatStep % 2 == 0 {
+//          print("1/32th")
+//        } else {
+//          print("1/64th")
+//        }
+
+        if dustSynth.playMode == .device {
+          if beatStep % 32 == 0 {
+            dustSynth.playNote(frequency: noteTable[Int.random(in: 4 ... 5)][self.selectedScaleInKey.notes.randomElement()!])
+          } else if beatStep % 32 == 8 {
+            dustSynth.playNote(frequency: noteTable[Int.random(in: 4 ... 5)][self.selectedScaleInKey.notes.randomElement()!])
+          } else if beatStep % 32 == 16 {
+            dustSynth.playNote(frequency: noteTable[Int.random(in: 4 ... 5)][self.selectedScaleInKey.notes.randomElement()!])
+          }
+        } else if dustSynth.playMode == .sequencer {}
+
+        if ambiSynth.playMode == .device {
+          if beatStep == 0 && beat == 0 && bar % 4 == 0 {
+            let rootNote = selectedScaleInKey.notes.randomElement()!
+
+            ambiSynth.playNote(frequency: noteTable[3][rootNote])
+            ambiSynth.playNote(frequency: noteTable[2][self.selectedScaleInKey.notes.randomElement()!])
+            ambiSynth.playNote(frequency: noteTable[1][rootNote])
+          }
+        } else if ambiSynth.playMode == .sequencer {}
+
+        if basicSynth.playMode == .device {
+          if !self.bpmSync || beatStep % 4 == 0 {
+            let newFrequency: Float = noteTable[
+              (abs(Int((daco?.motion.deviceMotion?.attitude.pitch ?? 0) * 10)) % 3) + 2
+            ][
+              self.selectedScaleInKey.notes[abs(Int((daco?.motion.deviceMotion?.attitude.roll ?? 0) * 10)) % self.selectedScaleInKey.notes.count]
+            ]
+
+            if self.frequencyHistory[self.frequencyHistory.count - 1] != newFrequency {
+              self.frequencyHistory.append(newFrequency)
+              basicSynth.playNote(frequency: newFrequency)
+
+              if self.frequencyHistory.count > 10 {
+                self.frequencyHistory.removeSubrange(0 ... (self.frequencyHistory.count - 11))
+              }
+            }
+          }
+        } else if basicSynth.playMode == .sequencer {}
+
+        if sparkSynth.playMode == .device {
+          if beatStep % 64 == 0 {
+            sparkSynth.playNote(frequency: noteTable[Int.random(in: 3 ... 5)][self.selectedScaleInKey.notes.randomElement()!])
+          } else if beatStep % 64 == 16 {
+            sparkSynth.playNote(frequency: noteTable[Int.random(in: 3 ... 5)][self.selectedScaleInKey.notes.randomElement()!])
+          } else if beatStep % 64 == 32 {
+            sparkSynth.playNote(frequency: noteTable[Int.random(in: 3 ... 5)][self.selectedScaleInKey.notes.randomElement()!])
+          }
+        } else if sparkSynth.playMode == .sequencer {}
+
+        beatStep += 1
+
+        if beatStep >= beatTotalSteps {
+          beatStep = 0
+          beat += 1
+
+          self.beatSignal.toggle()
+
+          if beat >= 4 {
+            beat = 0
+            bar += 1
+          }
+        }
+
+        if timer.timeInterval != Double(bpm) / 60.0 / Double(beatTotalSteps) {
+          timer.invalidate()
+
+          startBPMTimer()
+        }
+      }
+    }
+    startBPMTimer()
   }
 
   private func queueSpeaking(speechNode: SpeechNode, first: Bool = false) {
@@ -299,7 +400,7 @@ struct ContentView: View {
     DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
       if self.enableNetworking {
         postSpeak { data in
-          if data != nil {
+          if data != nil && playing {
             speechNode.speak(string: data! as String, voiceIdentifier: SpeechNode.voiceIdentifiers.randomElement()!)
           }
 
@@ -312,13 +413,13 @@ struct ContentView: View {
   }
 
   private func stop() {
-    dataCollector?.shouldPostData = false
+    daco?.shouldPostData = false
 
-    if playing {
+    if !playing {
       for synth in synths {
         synth.stopped = true
       }
-    } else {
+
       fullyStopped = true
       engine?.stop()
 
@@ -329,9 +430,4 @@ struct ContentView: View {
 
     playing = false
   }
-}
-
-#Preview {
-  ContentView()
-    .modelContainer(for: Item.self, inMemory: true)
 }
